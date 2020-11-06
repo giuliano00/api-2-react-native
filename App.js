@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Image, Button } from 'react-native';
-//import Logo from '../../assets/images/logo.gif';
 import axios from 'axios';
 
 export default class app extends React.Component {
@@ -9,8 +8,6 @@ export default class app extends React.Component {
     response: [],
     estado: false
   }
-
-
 
   setpersonaje(p) {
     var per = p;
@@ -59,7 +56,7 @@ export default class app extends React.Component {
 
           <Text>busca un personaje por id </Text>
           <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 25, padding: 15 }}
+            style={{height: 70, borderColor: 'gray', borderWidth: 1, margin: 15, padding: 10 }}
             onChangeText={this.setpersonaje.bind(this)}
 
           />
