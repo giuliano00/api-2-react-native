@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Image, Button } from 'react-native';
 import axios from 'axios';
 
+
+
 export default class app extends React.Component {
 
   state = {
     response: [],
-    estado: false
+    estado: false,
+    name:''
   }
 
   setpersonaje(p) {
@@ -14,17 +17,20 @@ export default class app extends React.Component {
     this.setState({ value: per });
   }
 
-  buscarpersonaje = () => {
+   buscarpersonaje = async() => {
     var per = this.state.value;
 
-    axios.get("https://kitsu.io/api/edge/characters/" + per)
+    await axios.get("https://kitsu.io/api/edge/characters/" + per)
       .then(res => {
-        console.log(res);
+        console.log(res.data.data.attributes.canonicalName);
         if (res.data != false) {
           this.setState({
             response: res.data,
-            estado: true
-          })
+            estado: true,
+            name:res.data.data.attributes.canonicalName
+          })//debug
+          console.log("asta aca");//aca rompe la vista 
+          console.log( this.state.name);//este no lo encuentra 
         } else {
           console.log("Error");
         }
@@ -46,6 +52,7 @@ export default class app extends React.Component {
             title="Buscar"
             color="#4f9a94"
           />
+          
         </View>
 
       );
@@ -56,7 +63,7 @@ export default class app extends React.Component {
 
           <Text>busca un personaje por id </Text>
           <TextInput
-            style={{height: 70, borderColor: 'gray', borderWidth: 1, margin: 15, padding: 10 }}
+            style={{ height: 70, borderColor: 'gray', borderWidth: 1, margin: 15, padding: 10 }}
             onChangeText={this.setpersonaje.bind(this)}
 
           />
@@ -65,10 +72,10 @@ export default class app extends React.Component {
             title="Buscar"
             color="#4f9a94"
           />
-          <Text style={styles.box}>nombre : {this.state.response.data.attributes.canonicalName}</Text>
+          <Text style={styles.box}>nombre :{this.state.name}</Text>
           <Text style={styles.box}>nombre en japones : {this.state.response.data.attributes.names.ja_jp}</Text>
-          <Text style={styles.box}>otro nombre : {this.state.response.data.attributes.otherNames}</Text>
-          <Text style={styles.box}>descripcion : {this.state.response.data.attributes.description}</Text>
+          <Text style={styles.box} >otro nombre : {this.state.response.data.attributes.otherNames}</Text>
+          
         </View>
       );
     }
@@ -83,11 +90,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   box: {
-    flex: 1,
+    
     textAlign: 'center',
-    padding: '5px'
-
-  },
+    padding: 5,
+  }
 
 });
 //shift alt f acomoda
